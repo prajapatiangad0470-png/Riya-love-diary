@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Love Diary | Heartbeats Across the Stars</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Orbitron:wght@500;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-deep: #0a0518;
+            --card-glass: rgba(25, 12, 40, 0.65);
+            --border-glow: rgba(255, 105, 180, 0.4);
+            --accent-pink: #ff2a85;
+            --accent-cyan: #00f3ff;
+            --accent-purple: #b5179e;
+            --accent-rose: #ff758f;
+            --text-light: #f8fafc;
+            --text-muted: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Canvas Background for Stars & Floating Hearts */
+        #space-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.2rem;
+            background: linear-gradient(90deg, var(--accent-rose), var(--accent-cyan), #f72585);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+            text-shadow: 0 0 25px rgba(255, 42, 133, 0.4);
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            font-style: italic;
+        }
+
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6),
+                        inset 0 0 20px rgba(255, 42, 133, 0.15);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 117, 143, 0.7);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.7),
+                        0 0 20px rgba(255, 42, 133, 0.3);
+        }
+
+        /* Lock Screen Modal */
+        #lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 5, 24, 0.95);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .lock-box {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .lock-box h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            color: var(--accent-pink);
+            margin-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--accent-rose);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="password"], input[type="text"], textarea, select {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(10, 5, 24, 0.75);
+            border: 1px solid rgba(255, 117, 143, 0.25);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1.05rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        select option {
+            background: #0a0518;
+            color: #fff;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 12px rgba(255, 42, 133, 0.4);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 130px;
+        }
+
+        .btn-love {
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            color: #fff;
+            border: none;
+            padding: 14px 30px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(255, 42, 133, 0.4);
+        }
+
+        .btn-love:hover {
+            background: linear-gradient(135deg, var(--accent-rose), var(--accent-pink));
+            box-shadow: 0 0 25px rgba(255, 42, 133, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .error-msg {
+            color: #ff4d6d;
+            font-size: 0.95rem;
+            margin-top: 12px;
+            display: none;
+            font-weight: 600;
+        }
+
+        /* Main Content Hide/Show */
+        #main-content {
+            display: none;
+        }
+
+        .feed-header {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: var(--accent-rose);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .entry-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .entry-vibe {
+            font-size: 0.9rem;
+            background: rgba(255, 42, 133, 0.2);
+            border: 1px solid rgba(255, 42, 133, 0.4);
+            padding: 3px 10px;
+            border-radius: 20px;
+            color: var(--accent-rose);
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .entry-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .entry-content {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            color: #e2e8f0;
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: #ff4d6d;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+            margin-left: 12px;
+        }
+
+        .delete-btn:hover {
+            color: #ff0033;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 40px;
+            font-size: 1.15rem;
+        }
+
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .row .form-group {
+            flex: 1;
+        }
+
+        @media (max-width: 600px) {
+            .row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic Space & Hearts Background -->
+    <canvas id="space-bg"></canvas>
+
+    <!-- Lock Screen (Password Required) -->
+    <div id="lock-screen">
+        <div class="glass-card lock-box">
+            <h2><i class="fa-solid fa-heart-circle-bolt"></i> Secret Journal</h2>
+            <p style="color: var(--text-muted); margin-bottom: 25px;">Enter passcode to unlock memories</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <input type="password" id="passcode" placeholder="Enter password..." required>
+                </div>
+                <button type="submit" class="btn-love">
+                    <i class="fa-solid fa-key"></i> Unlock Diary
+                </button>
+                <div id="error-msg" class="error-msg">Incorrect Passcode! Hint: Riyad</div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Diary Application -->
+    <div class="container" id="main-content">
+        <header>
+            <h1><i class="fa-solid fa-user-astronaut"></i> Cosmic Love Diary</h1>
+            <p>Capturing everyday thoughts, memories, and moments across the universe</p>
+        </header>
+
+        <!-- Entry Input Form -->
+        <div class="glass-card">
+            <form id="journal-form">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="title"><i class="fa-solid fa-heading"></i> Entry Title</label>
+                        <input type="text" id="title" placeholder="e.g., Late Night Conversations, Special Memories..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="vibe"><i class="fa-solid fa-face-smile-wink"></i> Today's Vibe</label>
+                        <select id="vibe">
+                            <option value="🥰 Loved & Happy">🥰 Loved & Happy</option>
+                            <option value="💌 Romantic Thoughts">💌 Romantic Thoughts</option>
+                            <option value="✨ Magical Moment">✨ Magical Moment</option>
+                            <option value="💖 Missing Someone">💖 Missing Someone</option>
+                            <option value="🌙 Late Night Thoughts">🌙 Late Night Thoughts</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="content"><i class="fa-solid fa-pen-nib"></i> Dear Diary...</label>
+                    <textarea id="content" placeholder="Write about your day, feelings, and special moments here..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-love">
+                    <i class="fa-solid fa-heart"></i> Save Memory
+                </button>
+            </form>
+        </div>
+
+        <!-- Saved Diary Entries Feed -->
+        <div class="feed-header">
+            <span><i class="fa-solid fa-book-bookmark"></i> Memory Journal</span>
+        </div>
+        
+        <div id="entries-container"></div>
+    </div>
+
+    <script>
+        /* --- Password Configuration --- */
+        const SECRET_PASSWORD = "Riyad"; 
+
+        const loginForm = document.getElementById('login-form');
+        const passcodeInput = document.getElementById('passcode');
+        const lockScreen = document.getElementById('lock-screen');
+        const mainContent = document.getElementById('main-content');
+        const errorMsg = document.getElementById('error-msg');
+
+        // Session persistence
+        if (sessionStorage.getItem('cosmic_love_unlocked') === 'true') {
+            lockScreen.style.display = 'none';
+            mainContent.style.display = 'block';
+        }
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (passcodeInput.value.trim() === SECRET_PASSWORD) {
+                sessionStorage.setItem('cosmic_love_unlocked', 'true');
+                lockScreen.style.opacity = '0';
+                lockScreen.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => {
+                    lockScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                }, 500);
+            } else {
+                errorMsg.style.display = 'block';
+                passcodeInput.value = '';
+            }
+        });
+
+        /* --- Dynamic Space & Floating Hearts Canvas --- */
+        const canvas = document.getElementById('space-bg');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const particles = [];
+        const particleCount = 100;
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.8,
+                alpha: Math.random(),
+                speed: Math.random() * 0.02 + 0.005,
+                isHeart: Math.random() < 0.2, // 20% particles are floating hearts
+                size: Math.random() * 8 + 4
+            });
+        }
+
+        function drawHeart(x, y, size, alpha) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.translate(x, y);
+            ctx.scale(size / 10, size / 10);
+            ctx.moveTo(0, 0);
+            ctx.bezierCurveTo(-5, -5, -10, 0, 0, 10);
+            ctx.bezierCurveTo(10, 0, 5, -5, 0, 0);
+            ctx.fillStyle = `rgba(255, 42, 133, ${alpha})`;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = "#ff2a85";
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawBackground() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                if (p.isHeart) {
+                    drawHeart(p.x, p.y, p.size, p.alpha);
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(0, 243, 255, ${p.alpha})`;
+                    ctx.shadowBlur = 6;
+                    ctx.shadowColor = "#00f3ff";
+                    ctx.fill();
+                }
+
+                p.alpha += p.speed;
+                if (p.alpha > 1 || p.alpha < 0) {
+                    p.speed = -p.speed;
+                }
+            });
+            requestAnimationFrame(drawBackground);
+        }
+        drawBackground();
+
+        /* --- Diary Operations --- */
+        const form = document.getElementById('journal-form');
+        const entriesContainer = document.getElementById('entries-container');
+
+        document.addEventListener('DOMContentLoaded', displayEntries);
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const vibe = document.getElementById('vibe').value;
+            const content = document.getElementById('content').value;
+            const date = new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
+
+            const entry = { id: Date.now(), title, vibe, content, date };
+            saveEntry(entry);
+            form.reset();
+            displayEntries();
+        });
+
+        function getEntries() {
+            return JSON.parse(localStorage.getItem('cosmic_love_entries')) || [];
+        }
+
+        function saveEntry(entry) {
+            const entries = getEntries();
+            entries.unshift(entry);
+            localStorage.setItem('cosmic_love_entries', JSON.stringify(entries));
+        }
+
+        function deleteEntry(id) {
+            let entries = getEntries();
+            entries = entries.filter(entry => entry.id !== id);
+            localStorage.setItem('cosmic_love_entries', JSON.stringify(entries));
+            displayEntries();
+        }
+
+        function displayEntries() {
+            const entries = getEntries();
+            entriesContainer.innerHTML = '';
+
+            if (entries.length === 0) {
+                entriesContainer.innerHTML = `
+                    <div class="glass-card empty-state">
+                        <i class="fa-solid fa-heart-crack" style="font-size: 2.2rem; margin-bottom: 12px; color: var(--accent-pink);"></i>
+                        <p>No memories saved yet. Write your first diary entry above!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            entries.forEach(entry => {
+                const card = document.createElement('div');
+                card.className = 'glass-card';
+                card.innerHTML = `
+                    <div class="entry-header">
+                        <div>
+                            <div class="entry-title">${escapeHTML(entry.title)}</div>
+                            <span class="entry-vibe">${entry.vibe}</span>
+                        </div>
+                        <div>
+                            <span class="entry-date"><i class="fa-regular fa-clock"></i> ${entry.date}</span>
+                            <button class="delete-btn" onclick="deleteEntry(${entry.id})" title="Delete Entry">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="entry-content">${escapeHTML(entry.content)}</div>
+                `;
+                entriesContainer.appendChild(card);
+            });
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+    </script>
+</body>
+</html>
